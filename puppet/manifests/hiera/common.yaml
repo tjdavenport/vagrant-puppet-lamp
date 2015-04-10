@@ -1,0 +1,22 @@
+php::ensure: latest
+php::manage_repos: true
+php::fpm: true
+php::dev: true
+php::composer: true
+php::pear: true
+php::phpunit: true
+php::fpm::config:log_level: notice
+php::composer::auto_update: true
+
+php::settings:
+  Date/date.timezone: Europe/Berlin
+  extension: intl.so
+php::cli::settings:
+  PHP/memory_limit: 512M
+php::fpm::settings:
+  PHP/short_open_tag: 'On'
+
+php::extensions:
+  intl: {}
+  mysql: {}
+  json: {}

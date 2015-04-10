@@ -1,0 +1,6 @@
+---
+:backends: yaml
+:yaml:
+  :datadir: '%{settings::manifestdir}/hiera'
+:hierarchy: common
+:logger: console
