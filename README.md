@@ -1,4 +1,40 @@
-# vagrant-puppet-lamp
-Minimal LAMP server using Vagrant and Puppet
+#vagrant puppet lamp#
+A minimal LAMP setup created with Vagrant, Puppet, and Hiera.
 
-More docs coming soon
+##What's inside?##
+* Ubuntu Trusty 64
+* PHP
+    * Composer
+    * PHPUnit
+    * fpm
+    * Mysql, json, and intl extensions
+* MySQL
+    * All default settings
+* Apache
+    * mod_fastcgi
+    * mod_rewrite
+    * mod_actions
+* Nodejs
+    * npm
+    * bower
+    * grunt-cli
+
+##Setup##
+Just clone or download this repositoy and run **vagrant up**
+
+## Adding Virtual Hosts ##
+1. Open manifests/apache.pp
+2. Copy the example vhost entry
+3. Change the docroot and the name
+```
+apache::vhost { 'example2.dev':
+  port    => '80',
+  docroot => '/var/www/example2',
+  custom_fragment => 'AddType application/x-httpd-php .php',
+  override => 'All',
+  docroot_owner => 'vagrant',
+}
+```
+
+##Adding PHP Extensions/Settings##
+You can manage all of PHP's settings in the php configuration file located at manifests/config/php.yaml. I've left some comments and a link to the mayflower php module documentation.
