@@ -43,7 +43,7 @@ apache::vhost { 'example2.dev':
 You can manage all of PHP's settings in the php configuration file located at manifests/config/php.yaml. I've left some comments and a link to the mayflower php module documentation.
 
 ##Managing MySQL##
-There are a couple of ways to connect to the MySQL server. You can use a program like Sequal Pro, or you can interact via the comman line by running **sudo mysql**. 
+There are a couple of ways to connect to the MySQL server. You can use a program like Sequal Pro, or you can interact via the command line by running **sudo mysql**. 
 
 ###Using Sequal Pro###
 1. Run **vagrant ssh-config** in the repo root.
