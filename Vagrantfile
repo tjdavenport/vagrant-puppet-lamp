@@ -21,8 +21,8 @@ Vagrant.configure(2) do |config|
 
     # Puppet configuration
     config.vm.provision :puppet do |puppet|
-        puppet.manifests_path = './puppet/manifests'
-        puppet.module_path = './puppet/modules'
+        puppet.manifests_path = './manifests'
+        puppet.module_path = './modules'
         puppet.hiera_config_path = 'hiera.yaml'
     end
 end
