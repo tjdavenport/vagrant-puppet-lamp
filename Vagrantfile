@@ -12,10 +12,13 @@ Vagrant.configure(2) do |config|
     config.vm.network 'private_network', ip: '192.168.56.101'
     config.vm.network 'forwarded_port', guest: 80, host: 8080
 
+    # Shared folders
+    config.vm.synced_folder '~/WEB', '/var/www/', owner: 'vagrant', mount_options: ['dmode=777', 'fmode=777']
+
     # VirtualBox settings
     config.vm.provider 'virtualbox' do |vbox|
         vbox.name = 'Fragbox'
-        vbox.memory = 512
+        vbox.memory = 1024 
         vbox.cpus = 1
     end
 
