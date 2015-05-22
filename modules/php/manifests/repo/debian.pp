@@ -1,32 +1,21 @@
-# == Class: php::repo::debian
-#
 # Configure debian apt repo
 #
 # === Parameters
 #
 # [*location*]
-#   location of the apt repository
+#   Location of the apt repository
 #
 # [*release*]
-#   release of the apt repository
+#   Release of the apt repository
 #
 # [*repos*]
-#   apt repository names
+#   Apt repository names
 #
 # [*include_src*]
-#   add source source repository
+#   Add source source repository
 #
 # [*dotdeb*]
-#   enable special dotdeb handling
-#
-# === Authors
-#
-# Christian "Jippi" Winther <jippignu@gmail.com>
-# Robin Gloster <robin.gloster@mayflower.de>
-#
-# === Copyright
-#
-# See LICENSE file
+#   Enable special dotdeb handling
 #
 class php::repo::debian(
   $location     = 'http://packages.dotdeb.org',
@@ -42,22 +31,22 @@ class php::repo::debian(
 
   include '::apt'
 
-  apt::source { "source_php_${release}":
+  ::apt::source { "source_php_${release}":
     location    => $location,
     release     => $release,
     repos       => $repos,
-    include_src => $include_src
+    include_src => $include_src,
   }
 
   if ($dotdeb) {
     # wheezy-php55 requires both repositories to work correctly
     # See: http://www.dotdeb.org/instructions/
     if $release == 'wheezy-php55' {
-      apt::source { 'dotdeb-wheezy':
+      ::apt::source { 'dotdeb-wheezy':
         location    => $location,
         release     => 'wheezy',
         repos       => $repos,
-        include_src => $include_src
+        include_src => $include_src,
       }
     }
 
@@ -67,6 +56,6 @@ class php::repo::debian(
       path    => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ];
     }
 
-    Exec['add_dotdeb_key'] -> Apt::Source["source_php_${release}"]
+    Exec['add_dotdeb_key'] -> ::Apt::Source["source_php_${release}"]
   }
 }

@@ -17,11 +17,11 @@
 
 ##Overview
 
-The mysql module installs, configures, and manages the MySQL service.
+The MySQL module installs, configures, and manages the MySQL service.
 
 ##Module Description
 
-The mysql module manages both the installation and configuration of MySQL, as well as extending Puppet to allow management of MySQL resources, such as databases, users, and grants.
+The MySQL module manages both the installation and configuration of MySQL, as well as extending Puppet to allow management of MySQL resources, such as databases, users, and grants.
 
 ##Setup
 
@@ -89,7 +89,7 @@ $override_options = {
 produces
 
 ~~~
-[mysql]
+[mysqld]
 replicate-do-db = base1
 replicate-do-db = base2
 ~~~
@@ -202,9 +202,11 @@ The MySQL root password. Puppet attempts to set the root password and update `/r
 
 This is required if `create_root_user` or `create_root_my_cnf` are 'true'. If `root_password` is 'UNSET', then `create_root_user` and `create_root_my_cnf` are assumed to be false --- that is, the MySQL root user and `/root/.my.cnf` are not created.
 
-#####`old_root_password`
+Password changes are supported; however, the old password must be set in `/root/.my.cnf`. Effectively, Puppet uses the old password, configured in `/root/my.cnf`, to set the new password in MySQL, and then updates `/root/.my.cnf` with the new password. 
 
-The previous root password. Required if you want to change the root password via Puppet.
+####`old_root_password`
+
+This parameter no longer does anything. It exists only for backwards compatibility. See the `root_password` parameter above for details on changing the root password.
 
 #####`override_options`
 
@@ -246,13 +248,17 @@ Whether the service should be restarted when things change. Valid values are 'tr
 
 The name of the group used for root. Can be a group name or a group ID. See more about the [`group` file attribute](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-group).
 
+#####`mysql_group`
+
+The name of the group of the MySQL daemon user. Can be a group name or a group ID. See more about the [`group` file attribute](https://docs.puppetlabs.com/references/latest/type.html#file-attribute-group).
+
 #####`package_ensure`
 
 Whether the package exists or should be a specific version. Valid values are 'present', 'absent', or 'x.y.z'. Defaults to 'present'.
 
 #####`package_manage`
 
-Whether to manage the mysql server package. Defaults to true.
+Whether to manage the MySQL server package. Defaults to true.
 
 #####`package_name`
 
@@ -372,6 +378,14 @@ Specify an array of databases to back up.
 #####`file_per_database`
 
 Whether a separate file be used per database. Valid values are 'true', 'false'. Defaults to 'false'.
+
+#####`include_routines`
+
+Whether or not to include routines for each database when doing a `file_per_database` backup. Defaults to `false`.
+
+#####`include_triggers`
+
+Whether or not to include triggers for each database when doing a `file_per_database` backup. Defaults to `false`.
 
 #####`ensure`
 
@@ -556,7 +570,7 @@ Whether the MySQL package should be present, absent, or a specific version. Vali
 
 #####`package_manage`
 
-Whether to manage the mysql client package. Defaults to true.
+Whether to manage the MySQL client package. Defaults to true.
 
 #####`package_name`
 
@@ -768,6 +782,18 @@ The name of the MySQL plugin to manage.
 
 The library file name.
 
+###Facts
+
+#### `mysql_version`
+
+Determines the MySQL version by parsing the output from `mysql --version`
+
+#### `mysql_server_id`
+
+Generates a unique id, based on the node's MAC address, which can be used as
+`server_id`. This fact will *always* return `0` on nodes that have only
+loopback interfaces. Because those nodes aren't connected to the outside world, this shouldn't cause any conflicts.
+
 ##Limitations
 
 This module has been tested on:
@@ -784,7 +810,7 @@ Testing on other platforms has been minimal and cannot be guaranteed.
 #Development
 
 Puppet Labs modules on the Puppet Forge are open projects, and community
-contributions are essential for keeping them great. We can’t access the
+contributions are essential for keeping them great. We can't access the
 huge number of platforms and myriad of hardware, software, and deployment
 configurations that Puppet is intended to serve.
 

@@ -1,24 +1,13 @@
-# == Class: php::params
-#
 # PHP params class
-#
-# === Authors
-#
-# Christian "Jippi" Winther <jippignu@gmail.com>
-# Robin Gloster <robin.gloster@mayflower.de>
-#
-# === Copyright
-#
-# See LICENSE file
 #
 class php::params {
 
-  $ensure              = 'latest'
+  $ensure              = 'present'
   $fpm_service_enable  = true
   $composer_source     = 'https://getcomposer.org/composer.phar'
   $composer_path       = '/usr/local/bin/composer'
   $composer_max_age    = 30
-  $pear_ensure         = 'latest'
+  $pear_ensure         = 'present'
   $pear_package_suffix = 'pear'
   $phpunit_source    = 'https://phar.phpunit.de/phpunit.phar'
   $phpunit_path      = '/usr/local/bin/phpunit'
@@ -42,6 +31,7 @@ class php::params {
       $package_prefix          = 'php5-'
       $compiler_packages       = 'build-essential'
       $manage_repos            = true
+      $root_group              = 'root'
     }
     'Suse': {
       $config_root             = '/etc/php5'
@@ -59,6 +49,7 @@ class php::params {
       $fpm_group               = 'www'
       $package_prefix          = 'php5-'
       $manage_repos            = true
+      $root_group              = 'root'
       case $::operatingsystem {
         'SLES': {
           $compiler_packages = []
@@ -87,6 +78,29 @@ class php::params {
       $package_prefix          = 'php-'
       $compiler_packages       = ['gcc', 'gcc-c++', 'make']
       $manage_repos            = false
+      $root_group              = 'root'
+    }
+    'FreeBSD': {
+      $config_root             = '/usr/local/etc'
+      $config_root_ini         = "${config_root}/php"
+      # No common packages, because the required PHP base package will be
+      # pulled in as a dependency. This preserves the ability to choose
+      # any available PHP version by setting the 'package_prefix' parameter.
+      $common_package_names    = []
+      $common_package_suffixes = ['extensions']
+      $cli_inifile             = "${config_root}/php-cli.ini"
+      $dev_package_suffix      = undef
+      $fpm_config_file         = "${config_root}/php-fpm.conf"
+      $fpm_inifile             = "${config_root}/php.ini"
+      $fpm_package_suffix      = undef
+      $fpm_pool_dir            = "${config_root}/php-fpm.d"
+      $fpm_service_name        = 'php-fpm'
+      $fpm_user                = 'www'
+      $fpm_group               = 'www'
+      $package_prefix          = 'php56-'
+      $compiler_packages       = ['gcc']
+      $manage_repos            = false
+      $root_group              = 'wheel'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily}")

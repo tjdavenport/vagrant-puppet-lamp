@@ -1,8 +1,9 @@
-# == php::config::setting
-#
 # Configure php.ini settings
 #
 # === Parameters
+#
+# [*key*]
+#   The key of the value, like `ini_setting`
 #
 # [*file*]
 #   The path to ini file
@@ -12,18 +13,10 @@
 #
 # === Examples
 #
-# php::config::setting { 'Date/date.timezone':
-#   file  => '$full_path_to_ini_file'
-#   value => 'Europe/Berlin'
-# }
-#
-# === Authors
-#
-# Robin Gloster <robin.gloster@mayflower.de>
-#
-# === Copyright
-#
-# See LICENSE file
+#   php::config::setting { 'Date/date.timezone':
+#     file  => '$full_path_to_ini_file'
+#     value => 'Europe/Berlin'
+#   }
 #
 define php::config::setting(
   $key,
@@ -39,7 +32,7 @@ define php::config::setting(
 
   $split_name = split($key, '/')
   if count($split_name) == 1 {
-    $section = ''
+    $section = '' # lint:ignore:empty_string_assignment
     $setting = $split_name[0]
   } else {
     $section = $split_name[0]
@@ -50,6 +43,6 @@ define php::config::setting(
     value   => $value,
     path    => $file,
     section => $section,
-    setting => $setting
+    setting => $setting,
   }
 }

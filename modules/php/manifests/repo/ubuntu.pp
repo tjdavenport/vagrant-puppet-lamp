@@ -1,17 +1,20 @@
-# == Class: php::repo::ubuntu
-#
 # Configure ubuntu ppa
 #
-# === Authors
+# === Parameters
 #
-# Robin Gloster <robin.gloster@mayflower.de>
+# [*oldstable*]
+#   Install 5.4 (ondrej/php5-oldstable PPA)
 #
-# === Copyright
-#
-# See LICENSE file
-#
-class php::repo::ubuntu {
+class php::repo::ubuntu (
+  $oldstable = false,
+) {
   include '::apt'
 
-  apt::ppa { 'ppa:ondrej/php5': }
+  validate_bool($oldstable)
+
+  if ($::lsbdistcodename == 'precise' or $oldstable == true) {
+    ::apt::ppa { 'ppa:ondrej/php5-oldstable': }
+  } else {
+    ::apt::ppa { 'ppa:ondrej/php5': }
+  }
 }

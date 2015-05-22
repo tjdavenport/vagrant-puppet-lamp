@@ -1,5 +1,7 @@
-class { "apt": 
-  always_apt_update => true
+class { 'apt':
+  update => {
+    frequency => 'always',
+  },
 }
 
 apt::source { 'multiverse':

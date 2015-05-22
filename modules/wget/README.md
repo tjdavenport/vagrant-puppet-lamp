@@ -68,6 +68,10 @@ this case you must inform the correct filename in the cache like this:
     }
 ```
 
+Checksum can be used in the `source_hash` parameter, with the MD5-sum of the content to be downloaded.
+If content exists, but does not match it is removed before downloading.
+
+
 # Building
 
 Testing is done with rspec, [Beaker-rspec](https://github.com/puppetlabs/beaker-rspec), [Beaker](https://github.com/puppetlabs/beaker))

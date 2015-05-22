@@ -141,4 +141,19 @@ describe 'wget::fetch' do
     }) }
   end
 
+  context "with source_hash", :compile do
+    let(:params) { super().merge({
+      :source_hash => "d41d8cd98f00b204e9800998ecf8427e",
+    })}
+
+    it { should contain_exec('wget-test').with({
+      'command' => "wget --no-verbose --output-document='#{destination}' 'http://localhost/source' && echo 'd41d8cd98f00b204e9800998ecf8427e  #{destination}' | md5sum -c --quiet",
+      'environment' => []
+    }) }
+
+    it { should contain_exec('wget-source_hash-check-test').with({
+      'command' => "test ! -e '#{destination}' || rm #{destination}",
+      'unless'  => "echo 'd41d8cd98f00b204e9800998ecf8427e  #{destination}' | md5sum -c --quiet",
+    })}
+  end
 end

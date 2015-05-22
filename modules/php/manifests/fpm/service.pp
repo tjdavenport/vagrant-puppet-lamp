@@ -1,6 +1,4 @@
-# == Class: php::fpm::service
-#
-# Configure fpm service
+# Manage fpm service
 #
 # === Parameters
 #
@@ -13,20 +11,11 @@
 # [*enable*]
 #   Defines if the service is enabled
 #
-# === Authors
-#
-# Christian "Jippi" Winther <jippignu@gmail.com>
-# Robin Gloster <robin.gloster@mayflower.de>
-#
-# === Copyright
-#
-# See LICENSE file
-#
 class php::fpm::service(
-  $service_name = $php::params::fpm_service_name,
+  $service_name = $::php::params::fpm_service_name,
   $ensure       = 'running',
-  $enable       = $php::params::fpm_service_enable,
-) inherits php::params {
+  $enable       = $::php::params::fpm_service_enable,
+) inherits ::php::params {
 
   if $caller_module_name != $module_name {
     warning('php::fpm::service is private')
@@ -39,5 +28,5 @@ class php::fpm::service(
     hasstatus => true,
   }
 
-  Php::Extension <| |> ~> Service[$service_name]
+  ::Php::Extension <| |> ~> Service[$service_name]
 }

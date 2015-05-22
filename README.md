@@ -16,8 +16,6 @@ A minimal LAMP setup created with Vagrant, Puppet, and Hiera.
     * mod_actions
 * Nodejs
     * npm
-    * bower
-    * grunt-cli
 
 ##Setup##
 Just clone or download this repositoy and run **vagrant up**. Run **vagrant ssh** to easily login to the box.

@@ -1,11 +1,12 @@
 # mayflower/php Puppet Module
 
-[![Build Status](https://travis-ci.org/Mayflower/puppet-php.svg?branch=master)](https://travis-ci.org/Mayflower/puppet-php)
+[![GitHub version](https://badge.fury.io/gh/mayflower%2Fpuppet-php.svg)](https://github.com/mayflower/puppet-php)
+[![Build Status](https://travis-ci.org/mayflower/puppet-php.svg?branch=master)](https://travis-ci.org/mayflower/puppet-php)
 
 mayflower/php is a Puppet module for managing PHP with a strong focus
 on php-fpm. We strive to support all recent versions of Debian, Ubuntu,
-RedHat/CentOS and openSuSE/SLES. Managing Apache with `mod_php` is not
-supported.
+RedHat/CentOS, openSUSE/SLES and FreeBSD. Managing Apache with `mod_php`
+is not supported.
 
 This originally was a fork of [jippi/puppet-php](https://github.com/jippi/puppet-php)
 (nodes-php on Puppet Forge) but has since been rewritten in large parts.
@@ -13,7 +14,7 @@ This originally was a fork of [jippi/puppet-php](https://github.com/jippi/puppet
 ## Usage
 
 The module aims to use sane defaults for the supported architectures. You
-must use hiera to configure most aspects of this module.
+must use hiera to configure most aspects of this module in a simple way.
 
 The recommended way is to include the `php` main class in your manifests:
 
@@ -32,12 +33,12 @@ php::dev: true
 php::composer: true
 php::pear: true
 php::phpunit: false
-php::fpm::config:log_level: notice
+php::fpm::config::log_level: notice
 php::composer::auto_update: true
 ```
 
 There are more configuration options available. Please refer to the
-documention in the manifests for a complete overview.
+auto-generated documention at http://php.puppet.mayflower.de/.
 
 ### Defining `php.ini` settings
 
@@ -64,7 +65,7 @@ php::fpm::settings:
 ### Installing extensions
 
 Extensions can be installed and configured by defining the hash
-`php::extensions` in hiera. They are activated for all activated components.
+`php::extensions` in hiera. They are activated for all activated SAPIs.
 
 ```
 php::extensions:
@@ -106,6 +107,14 @@ We prefer using php-fpm. You can find an example Apache vhost in
 `manifests/apache_vhost.pp` that shows you how to use `mod_proxy_fcgi` to
 connect to php-fpm.
 
+### FreeBSD support
+
+On FreeBSD systems we purge the system-wide `extensions.ini` in favour of
+per-module configuration files.
+
+Please also note that support for Composer and PHPUnit on FreeBSD is untested
+and thus likely incomplete.
+
 ## Bugs & New Features
 
 If you happen to stumble upon a bug, please feel free to create a pull request
@@ -129,7 +138,7 @@ a big fat warning into this README to let you know.
 The project is released under the permissive MIT license.
 
 The source can be found at
-[github.com/Mayflower/puppet-php](https://github.com/Mayflower/puppet-php/).
+[github.com/mayflower/puppet-php](https://github.com/mayflower/puppet-php/).
 
 This Puppet module is being actively maintained by some fellow puppeteers at
-Mayflower GmbH.
+[Mayflower GmbH](https://mayflower.de).

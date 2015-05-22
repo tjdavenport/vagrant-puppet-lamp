@@ -1,8 +1,7 @@
-# == Class: php::fpm::config
-#
-# Configure php-fpm
+# Configure php-fpm service
 #
 # === Parameters
+#
 # [*config_file*]
 #   The path to the fpm config file
 #
@@ -46,31 +45,23 @@
 # [*log_dir_mode*]
 #   The octal mode of the directory
 #
-# === Authors
-#
-# Christian "Jippi" Winther <jippignu@gmail.com>
-# Franz Pletz <franz.pletz@mayflower.de>
-#
-# === Copyright
-#
-# See LICENSE file
-
 class php::fpm::config(
-  $config_file                 = $php::params::fpm_config_file,
-  $user                        = $php::params::fpm_user,
-  $group                       = $php::params::fpm_group,
-  $inifile                     = $php::params::fpm_inifile,
+  $config_file                 = $::php::params::fpm_config_file,
+  $user                        = $::php::params::fpm_user,
+  $group                       = $::php::params::fpm_group,
+  $inifile                     = $::php::params::fpm_inifile,
   $settings                    = {},
-  $pool_base_dir               = $php::params::fpm_pool_dir,
+  $pool_base_dir               = $::php::params::fpm_pool_dir,
   $pool_purge                  = false,
   $log_level                   = 'notice',
   $emergency_restart_threshold = '0',
   $emergency_restart_interval  = '0',
   $process_control_timeout     = '0',
-  $log_owner                   = $php::params::fpm_user,
-  $log_group                   = $php::params::fpm_group,
+  $log_owner                   = $::php::params::fpm_user,
+  $log_group                   = $::php::params::fpm_group,
   $log_dir_mode                = '0770',
-) inherits php::params {
+  $root_group                  = $::php::params::root_group,
+) inherits ::php::params {
 
   validate_string($user)
   validate_string($group)
@@ -101,18 +92,18 @@ class php::fpm::config(
   }
 
   file { $config_file:
-    ensure  => present,
-    notify  => Class['php::fpm::service'],
+    ensure  => file,
+    notify  => Class['::php::fpm::service'],
     content => template('php/fpm/php-fpm.conf.erb'),
     owner   => root,
-    group   => root,
+    group   => $root_group,
     mode    => '0644',
   }
 
   file { $pool_base_dir:
     ensure => directory,
     owner  => root,
-    group  => root,
+    group  => $root_group,
     mode   => '0755',
   }
 
@@ -123,9 +114,9 @@ class php::fpm::config(
     }
   }
 
-  php::config { 'fpm':
+  ::php::config { 'fpm':
     file   => $inifile,
     config => $settings,
-    notify => Class['php::fpm::service'],
+    notify => Class['::php::fpm::service'],
   }
 }

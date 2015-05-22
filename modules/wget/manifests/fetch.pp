@@ -4,10 +4,16 @@
 # This defined type will download files from the internet.  You may define a
 # web proxy using $http_proxy if necessary.
 #
+# == Parameters:
+#  $source_hash:        MD5-sum of the content to be downloaded,
+#                       if content exists, but does not match it is removed
+#                       before downloading
+#
 ################################################################################
 define wget::fetch (
   $destination,
   $source             = $title,
+  $source_hash        = undef,
   $timeout            = '0',
   $verbose            = false,
   $redownload         = false,
@@ -49,7 +55,7 @@ define wget::fetch (
   if $redownload == true or $cache_dir != undef  {
     $unless_test = 'test'
   } else {
-    $unless_test = "test -s ${destination}"
+    $unless_test = "test -s '${destination}'"
   }
 
   $nocheckcert_option = $nocheckcertificate ? {
@@ -110,8 +116,18 @@ define wget::fetch (
     default => undef,
   }
 
+  case $source_hash{
+    '', undef: {
+      $command = "wget ${verbose_option}${nocheckcert_option}${no_cookies_option}${header_option}${user_option}${output_option}${flags_joined} '${source}'"
+    }
+    default: {
+      $command = "wget ${verbose_option}${nocheckcert_option}${no_cookies_option}${header_option}${user_option}${output_option}${flags_joined} '${source}' && echo '${source_hash}  ${destination}' | md5sum -c --quiet"
+    }
+  }
+
+
   exec { "wget-${name}":
-    command     => "wget ${verbose_option}${nocheckcert_option}${no_cookies_option}${header_option}${user_option}${output_option}${flags_joined} '${source}'",
+    command     => $command,
     timeout     => $timeout,
     unless      => $unless_test,
     environment => $environment,
@@ -131,6 +147,17 @@ define wget::fetch (
       owner   => $execuser,
       require => Exec["wget-${name}"],
       backup  => $backup,
+    }
+  }
+
+  # remove destination if source_hash is invalid
+  if $source_hash != undef {
+    exec { "wget-source_hash-check-${name}":
+      command => "test ! -e '${destination}' || rm ${destination}",
+      path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin',
+      # only remove destination if md5sum does not match $source_hash
+      unless  => "echo '${source_hash}  ${destination}' | md5sum -c --quiet",
+      notify  => Exec["wget-${name}"],
     }
   }
 }

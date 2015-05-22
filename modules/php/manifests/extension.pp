@@ -1,5 +1,3 @@
-# == Class: php::extension
-#
 # Install a PHP extension package
 #
 # === Parameters
@@ -25,7 +23,7 @@
 #   Superseded by *source*
 #
 # [*header_packages*]
-#   System packages dependecies to install for extensions (e.g. for
+#   System packages dependencies to install for extensions (e.g. for
 #   memcached libmemcached-dev on debian)
 #
 # [*zend*]
@@ -35,26 +33,21 @@
 # [*settings*]
 #   Nested hash of global config parameters for php.ini
 #
-# === Authors
-#
-# Christian "Jippi" Winther <jippignu@gmail.com>
-# Robin Gloster <robin.gloster@mayflower.de>
-# Franz Pletz <franz.pletz@mayflower.de>
-#
-# === Copyright
-#
-# See LICENSE file
+# [*settings_prefix*]
+#   Boolean/String parameter, whether to prefix all setting keys with
+#   the extension name or specified name. Defaults to false.
 #
 define php::extension(
   $ensure            = 'installed',
   $provider          = undef,
   $source            = undef,
   $pecl_source       = undef,
-  $package_prefix    = $php::package_prefix,
+  $package_prefix    = $::php::package_prefix,
   $header_packages   = [],
-  $compiler_packages = $php::params::compiler_packages,
+  $compiler_packages = $::php::params::compiler_packages,
   $zend              = false,
   $settings          = {},
+  $settings_prefix   = false,
 ) {
 
   if $caller_module_name != $module_name {
@@ -78,23 +71,24 @@ define php::extension(
   }
 
   if $provider != 'none' {
-    $real_package = $provider ? {
-      'pecl'  => "pecl-${title}",
-      default => "${package_prefix}${title}",
+    if $provider == 'pecl' {
+      $real_package = "pecl-${title}"
+    }
+    else {
+      $real_package = "${package_prefix}${title}"
     }
 
     ensure_resource('package', $header_packages)
-    Package[$header_packages] -> Package[$real_package] -> Php::Config[$title]
+    Package[$header_packages] -> Package[$real_package] -> ::Php::Config[$title]
 
     if $provider == 'pecl' {
       package { $real_package:
         ensure   => $ensure,
-        name     => $title,
         provider => $provider,
         source   => $real_source,
         require  => [
-          Class['php::pear'],
-          Class['php::dev'],
+          Class['::php::pear'],
+          Class['::php::dev'],
         ],
       }
 
@@ -120,15 +114,42 @@ define php::extension(
   }
 
   $lowercase_title = downcase($title)
-  $real_settings = $provider ? {
-    'pecl'  => deep_merge({ "${extension_key}" => "${name}.so" }, $settings),
-    default => $settings
-  }
-  $php_settings_file = "${php::params::config_root_ini}/${lowercase_title}.ini"
 
-  php::config { $title:
-    file   => $php_settings_file,
-    config => $real_settings,
+  # Ensure "<extension>." prefix is present in setting keys if requested
+  if $settings_prefix {
+    if is_string($settings_prefix) {
+      $full_settings_prefix = $settings_prefix
+    } else {
+      $full_settings_prefix = $lowercase_title
+    }
+    $full_settings = ensure_prefix($settings, "${full_settings_prefix}.")
+  } else {
+    $full_settings = $settings
+  }
+
+  if $provider == 'pecl' {
+    $final_settings = deep_merge(
+      {"${extension_key}" => "${name}.so"},
+      $full_settings
+    )
+  }
+  else {
+    # On FreeBSD systems the settings file is required for every module
+    # (regardless of provider) to allow for proper module management.
+    if $::osfamily == 'FreeBSD' {
+      $final_settings = deep_merge(
+        {"${extension_key}" => "${name}.so"},
+        $full_settings
+      )
+    }
+    else {
+      $final_settings = $full_settings
+    }
+  }
+
+  ::php::config { $title:
+    file   => "${::php::params::config_root_ini}/${lowercase_title}.ini",
+    config => $final_settings,
   }
 
   # Ubuntu/Debian systems use the mods-available folder. We need to enable
@@ -140,10 +161,10 @@ define php::extension(
       refreshonly => true,
     }
 
-    Php::Config[$title] ~> Exec[$cmd]
+    ::Php::Config[$title] ~> Exec[$cmd]
 
-    if $php::fpm {
-      Package[$php::fpm::package] ~> Exec[$cmd]
+    if $::php::fpm {
+      Package[$::php::fpm::package] ~> Exec[$cmd]
     }
   }
 }
