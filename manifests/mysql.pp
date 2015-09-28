@@ -3,8 +3,8 @@ class { '::mysql::server':
   require => Class['apt']
 }
 
-mysql::db { 'CULTURESCENE':
-  user     => 'CULTURESCENE',
+mysql::db { 'example':
+  user     => 'example',
   password => 'fragment',
   host     => 'localhost'
 }
