@@ -1,7 +1,0 @@
----
-:backends: yaml
-:yaml:
-    :datadir: '%{settings::manifestdir}/config'
-:hierarchy:
-    - php
-:logger: console
