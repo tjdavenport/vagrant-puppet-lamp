@@ -3,5 +3,5 @@
 :yaml:
     :datadir: '%{settings::manifestdir}'
 :hierarchy:
-    - php
+    - dev
 :logger: console
