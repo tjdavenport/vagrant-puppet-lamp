@@ -13,6 +13,9 @@ php::dev: true
 php::composer: true
 php::pear: true
 
+#PHP verison?
+php::globals::php_version: '7.0'
+
 # Install phpunit?
 php::phpunit: true
 php::fpm::config:log_level: notice
@@ -30,9 +33,9 @@ php::fpm::settings:
 
 # Define which extensions to include
 # and configure them
-php::extensions:
-    mysql: {}
-    curl: {}
-    json: {}
-    intl: {}
-    gd: {}
+#php::extensions:
+#    mysql: {}
+#    curl: {}
+#    json: {}
+#    intl: {}
+#    gd: {}

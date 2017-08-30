@@ -25,6 +25,6 @@ forge "https://forgeapi.puppetlabs.com"
 # mod 'puppetlabs-apache', '0.6.0', :github_tarball => 'puppetlabs/puppetlabs-apache'
 
 mod 'puppetlabs-apache', '1.6.0'
-mod 'puppetlabs-apt', '2.1.1'
-mod 'mayflower-php', '3.4.1'
+mod 'puppetlabs-apt', '4.1.0'
+mod 'mayflower-php', '4.0.0-beta1'
 mod 'puppetlabs-mysql', '3.6.0'
