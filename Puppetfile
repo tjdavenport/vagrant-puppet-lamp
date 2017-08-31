@@ -10,7 +10,7 @@ forge "https://forgeapi.puppetlabs.com"
 # modulefile
 
 # A module from the Puppet Forge
-# mod 'puppetlabs-stdlib'
+mod 'puppetlabs-stdlib'
 
 # A module from git
 # mod 'puppetlabs-ntp',
@@ -24,7 +24,10 @@ forge "https://forgeapi.puppetlabs.com"
 # A module from Github pre-packaged tarball
 # mod 'puppetlabs-apache', '0.6.0', :github_tarball => 'puppetlabs/puppetlabs-apache'
 
-mod 'puppetlabs-apache', '1.6.0'
-mod 'puppetlabs-apt', '2.1.1'
-mod 'mayflower-php', '3.4.1'
-mod 'puppetlabs-mysql', '3.6.0'
+# mod 'puppetlabs-apache', '1.6.0'
+mod 'puppetlabs-concat'
+mod 'puppetlabs-inifile'
+mod 'darin-zypprepo'
+mod 'example43-yum'
+mod 'puppetlabs-apt', '4.1.0'
+mod 'mayflower-php', '4.0.0-beta1'
