@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
   # config.vm.network "public_network"
 
   # This synced_folder should be the one we update to point to the Joechem code.
-  config.vm.synced_folder File.expand_path('./', Dir.pwd), "/var/www", mount_options: ["dmode=777,fmode=777"]
+  config.vm.synced_folder File.expand_path('../joechem', Dir.pwd), "/var/www", mount_options: ["dmode=777,fmode=777"]
 
   # These are puppet specific mounts, these should not be touched unless you want
   # to update the puppet setup.
