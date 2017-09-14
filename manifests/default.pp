@@ -7,3 +7,8 @@ class { '::php':
   pear         => true,
   phpunit      => false,
 }
+
+class { '::mysql::server':
+  root_password          => 'strongpassword',
+  remove_default_accounts => true
+}
