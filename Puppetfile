@@ -10,7 +10,7 @@ forge "https://forgeapi.puppetlabs.com"
 # modulefile
 
 # A module from the Puppet Forge
-mod 'puppetlabs-stdlib'
+mod 'puppetlabs-stdlib', '4.13.1'
 
 # A module from git
 # mod 'puppetlabs-ntp',
@@ -28,7 +28,8 @@ mod 'puppetlabs-stdlib'
 mod 'puppetlabs-concat'
 mod 'puppetlabs-inifile'
 mod 'darin-zypprepo'
-mod 'example43-yum'
 mod 'puppetlabs-apt', '4.1.0'
 mod 'mayflower-php', '4.0.0-beta1'
 mod 'puppetlabs-mysql', '4.0.1'
+mod 'arioch-redis', '3.1.0'
+mod 'puppetlabs-apache', '2.1.0'

@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 2080
+  config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
   # config.vm.network "public_network"
 
   # This synced_folder should be the one we update to point to the Joechem code.
-  config.vm.synced_folder File.expand_path('../joechem', Dir.pwd), "/var/www", mount_options: ["dmode=777,fmode=777"]
+  config.vm.synced_folder File.expand_path('../joechem', Dir.pwd), "/var/www/", mount_options: ["dmode=777,fmode=777"]
 
   # These are puppet specific mounts, these should not be touched unless you want
   # to update the puppet setup.
