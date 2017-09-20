@@ -1,33 +1,13 @@
 FORGE
   remote: https://forgeapi.puppetlabs.com
   specs:
-    darin-zypprepo (1.0.2)
-    example42-puppi (2.1.12)
-    example42-yum (2.1.21)
-      example42-puppi (>= 2.0.0)
-    mayflower-php (3.4.1)
-      darin-zypprepo (~> 1.0)
-      example42-yum (~> 2.0)
-      puppetlabs-apt (< 3.0.0, >= 1.0.0)
-      puppetlabs-inifile (~> 1.0)
-      puppetlabs-stdlib (< 5.0.0, >= 4.2.0)
-    nanliu-staging (1.0.3)
     puppetlabs-apache (1.6.0)
       puppetlabs-concat (< 2.0.0, >= 1.1.1)
       puppetlabs-stdlib (< 5.0.0, >= 2.4.0)
-    puppetlabs-apt (2.1.1)
-      puppetlabs-stdlib (< 5.0.0, >= 4.5.0)
-    puppetlabs-concat (1.2.4)
+    puppetlabs-concat (1.2.5)
       puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
-    puppetlabs-inifile (1.4.2)
-    puppetlabs-mysql (3.6.0)
-      nanliu-staging (~> 1.0)
-      puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
-    puppetlabs-stdlib (4.9.0)
+    puppetlabs-stdlib (4.19.0)
 
 DEPENDENCIES
-  mayflower-php (= 3.4.1)
   puppetlabs-apache (= 1.6.0)
-  puppetlabs-apt (= 2.1.1)
-  puppetlabs-mysql (= 3.6.0)
 
