@@ -2,37 +2,40 @@
 # information. https://forge.puppetlabs.com/mayflower/php
 
 # Use latest available php version
-php::ensure: latest
-php::manage_repos: true
+# php::ensure: latest
+# php::manage_repos: true
 
-# Use fpm?
-php::fpm: true
-php::dev: true
+# # Use fpm?
+# php::fpm: true
+# php::dev: true
 
-# Install composer?
-php::composer: true
-php::pear: true
+# # Install composer?
+# php::composer: true
+# php::pear: true
 
-# Install phpunit?
-php::phpunit: true
-php::fpm::config:log_level: notice
-php::composer::auto_update: true
+# #PHP verison?
+# php::globals::php_version: '7.0'
 
-# These kev/value pairs will be added 
-# to your php.ini. 
-php::settings:
-    Date/date.timezone: America/New_York
-    error_reporting: -1
-php::cli::settings:
-    PHP/memory_limit: 9999M
-php::fpm::settings:
-    PHP/short_open_tag: 'On'
+# # Install phpunit?
+# php::phpunit: true
+# php::fpm::config:log_level: notice
+# php::composer::auto_update: true
 
-# Define which extensions to include
-# and configure them
-php::extensions:
-    mysql: {}
-    curl: {}
-    json: {}
-    intl: {}
-    gd: {}
+# # These kev/value pairs will be added 
+# # to your php.ini. 
+# php::settings:
+#     Date/date.timezone: America/New_York
+#     error_reporting: -1
+# php::cli::settings:
+#     PHP/memory_limit: 9999M
+# php::fpm::settings:
+#     PHP/short_open_tag: 'On'
+
+# # Define which extensions to include
+# # and configure them
+# #php::extensions:
+# #    mysql: {}
+# #    curl: {}
+# #    json: {}
+# #    intl: {}
+# #    gd: {}
